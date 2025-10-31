@@ -268,9 +268,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9bc1209f17a75974aaf0e65fe2b78624, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraRotator
-  rotationSpeedKeyboard: 50
-  rotationSpeedMouse: 3
+  m_EditorClassIdentifier: Assembly-CSharp::cameraPleaseRotate
+  keyRotationSpeed: 100
+  mouseSensitivity: 2
   pitchLimit: 88
 --- !u!1 &410087039
 GameObject:
