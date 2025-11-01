@@ -1,0 +1,54 @@
+using UnityEngine;
+using UnityEngine.Events;
+
+public class Valve : MonoBehaviour
+{
+    [Header("Rotation Settings")]
+    public float rotationSpeed = 90f;       // Degrees per second
+    public float maxRotation = 360f;        // Total rotation before considered fully turned
+
+    [Header("Events")]
+    public UnityEvent onValveFullyTurned;   // Triggered when fully rotated
+
+    private float currentRotation = 0f;
+    private bool isCompleted = false;
+
+    public bool CanRotate = false;          // Controlled by Raycast
+
+    void Update()
+    {
+        if (isCompleted || !CanRotate)
+            return;
+
+        float rotationDelta = 0f;
+
+        // Right mouse button rotates clockwise
+        if (Input.GetMouseButton(1))
+        {
+            rotationDelta = rotationSpeed * Time.deltaTime;
+        }
+
+        // Left mouse button rotates counterclockwise
+        if (Input.GetMouseButton(0))
+        {
+            rotationDelta = -rotationSpeed * Time.deltaTime;
+        }
+
+        if (rotationDelta != 0f)
+        {
+            // Rotate around local Z axis (upright valve)
+            transform.Rotate(Vector3.forward, rotationDelta, Space.Self);
+
+            currentRotation += Mathf.Abs(rotationDelta);
+
+            if (currentRotation >= maxRotation)
+            {
+                currentRotation = maxRotation;
+                isCompleted = true;
+                CanRotate = false;
+                Debug.Log("Valve fully turned!");
+                onValveFullyTurned.Invoke();
+            }
+        }
+    }
+}
