@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/TitleScreen.unity
-    guid: c3ef7dfcc4721d642842d991815972df
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
@@ -20,18 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level 1.unity
     guid: 668eaa4769084d4418622fdc1d7807c3
-  - enabled: 1
-    path: Assets/Scenes/FLICKSWITCH_SCENE.unity
-    guid: 1c790f0756dde4544b5a327b23b6086c
-  - enabled: 1
-    path: Assets/Scenes/OpeningScene_MissionStatement+LabSafety.unity
-    guid: 64a6b2e338a672b43b0cc8a48a2150b6
-  - enabled: 1
-    path: Assets/Scenes/TURNCOOLENT_SCENE.unity
-    guid: 3b55ed928e4d15f489977305fa64f3f8
-  - enabled: 1
-    path: Assets/Scenes/TURNVALVE_SCENE.unity
-    guid: 4af7139b20b3db44dae1e226c2d9e981
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
