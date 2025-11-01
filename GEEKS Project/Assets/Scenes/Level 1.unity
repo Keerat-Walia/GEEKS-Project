@@ -661,7 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547ed5e303f877d4c85689841fc23ec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneSwitcher
-  targetSceneName: 
+  targetSceneName: MenuPage
 --- !u!4 &1809952104
 Transform:
   m_ObjectHideFlags: 0
