@@ -6,11 +6,12 @@ public class Popup : MonoBehaviour
 {
     public GameObject PopupPanel;      // Reference to the popup panel
     public Button Accept;        // Reference to the "Accept" button
-    public MissionText;  // Reference to popup text
-    public Image Background;            // Left image
+    public TextMeshProUGUI Text;  // Reference to popup text
+    public Image Background;         // Left image
     public Image Frame;           // Right image
-    public float popupDelay = 5f;      // Delay time before showing popup
+    public float popupDelay = 3f;      // Delay time before showing popup
 
+    public GameObject PPEPanel;
     void Start()
     {
         PopupPanel.SetActive(false);  // Hide popup at start
@@ -26,6 +27,9 @@ public class Popup : MonoBehaviour
 
     void ClosePopup()
     {
-        Destroy(PopupPanel);
+        PopupPanel.SetActive(false);
+
+        if (PPEPanel != null)
+            PPEPanel.SetActive(true);
     }
 }
