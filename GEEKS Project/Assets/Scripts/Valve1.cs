@@ -1,40 +1,43 @@
 using UnityEngine;
-using UnityEngine.Events;
+using System.Collections; // Required for Coroutines
 
 public class Valve1 : MonoBehaviour
 {
-    // ... (Your existing variables) ...
-    private bool isCompleted = false;
-    private bool isBeingClicked = false; // This is the new, local gate
-
-    void Update()
-    {
-        // Only run rotation if this specific valve is being clicked
-        if (isCompleted || !isBeingClicked)
-            return;
-
-        float rotationDelta = 0f;
-
-        // ... (Your rotation input logic using Input.GetMouseButton(0/1)) ...
-
-        if (rotationDelta != 0f)
-        {
-            // ... (Your rotation and completion logic) ...
-        }
-    }
+    public float rotationAngle = 90f; // Total angle to rotate
+    public Vector3 rotationAxis = Vector3.forward;
+    public float rotationDuration = 0.5f; // Time in seconds for the rotation
+    private bool isRotating = false; // Flag to prevent multiple rotations at once
 
     void OnMouseDown()
     {
-        // This only runs when the mouse clicks THIS object's collider
-        if (!isCompleted)
+        // Only start a new rotation if one isn't already in progress
+        if (!isRotating)
         {
-            isBeingClicked = true;
+            StartCoroutine(RotateValveSmoothly());
         }
     }
 
-    void OnMouseUp()
+    IEnumerator RotateValveSmoothly()
     {
-        // This only runs when the mouse is released after being down on THIS object
-        isBeingClicked = false;
+        isRotating = true;
+
+        // Calculate the target rotation
+        Quaternion startRotation = transform.rotation;
+        Quaternion targetRotation = startRotation * Quaternion.AngleAxis(rotationAngle, rotationAxis);
+
+        float timeElapsed = 0f;
+
+        while (timeElapsed < rotationDuration)
+        {
+            // Lerp from start to target rotation over time
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / rotationDuration);
+            timeElapsed += Time.deltaTime;
+            yield return null; // Wait for the next frame
+        }
+
+        // Ensure the rotation ends exactly at the target
+        transform.rotation = targetRotation;
+
+        isRotating = false;
     }
 }
