@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class loadMenuScene : MonoBehaviour
+public class loadNextScene : MonoBehaviour
 {
     // The name of the scene to load
     public string targetSceneName = "MenuPage";
