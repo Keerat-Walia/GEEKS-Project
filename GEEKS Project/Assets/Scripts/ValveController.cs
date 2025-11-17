@@ -1,31 +1,35 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections; // Needed for IEnumerator
 
 public class ValveController : MonoBehaviour
 {
     // --- Configuration for the valve ---
     public float rotationAngle = 90f;
-    public Vector3 rotationAxis = Vector3.right; // X-Axis for the valve spin
+    public Vector3 rotationAxis = Vector3.right;
     public float rotationDuration = 0.5f;
 
-    // ⭐ NEW: Reference to the central manager
+    // --- System Integration ---
     [Header("System Integration")]
+    // Must be a reference to the main manager script
     public RefrigerationCycleManager manager;
 
-    // ⭐ NEW: Charge adjustment parameters
-    [Tooltip("The amount of charge to add/remove per full rotationAngle.")]
-    public float chargeAdjustmentPerClick = 0.05f;
+    // ⭐ NEW: Enum to define what this valve controls
+    public enum ControlType { RefrigerantCharge, FanSpeed }
+    public ControlType controlType = ControlType.RefrigerantCharge;
 
-    [Tooltip("Set to 1 for adding charge (V3), or -1 for removing charge (V2).")]
-    public float chargeDirection = 1f;
+    // --- Control Parameters ---
+    [Tooltip("The amount of charge/speed to add/remove per full rotationAngle.")]
+    public float adjustmentPerClick = 0.05f;
+
+    [Tooltip("Set to 1 for increase, or -1 for decrease.")]
+    public float direction = 1f;
 
     [Header("Valve State")]
     public float TotalRotationAngle = 0f;
 
-    private bool isRotating = false;
+    private bool isRotating = false; // Must be declared outside the coroutine
 
-    // --- REMOVED: gaugeNeedle and GaugeScale are no longer needed here ---
-    // private const float GaugeScale = 0.25f;
+    // --- Required Unity Methods ---
 
     void Start()
     {
@@ -44,6 +48,8 @@ public class ValveController : MonoBehaviour
         }
     }
 
+    // --- Coroutine Logic (The part you provided, now fixed and inside the class) ---
+
     IEnumerator RotateValveSmoothly()
     {
         isRotating = true;
@@ -54,34 +60,42 @@ public class ValveController : MonoBehaviour
         // Calculate the target total rotation for the valve
         float newTotalRotation = TotalRotationAngle + rotationAngle;
 
-        float timeElapsed = 0f;
+        float timeElapsed = 0f; // Declared within the method scope
 
-        // Calculate the total charge change for this rotation click
-        float totalChargeChange = chargeAdjustmentPerClick * chargeDirection;
-        float chargeChangePerFrame;
+        // Calculate the total change for this rotation click
+        float totalChange = adjustmentPerClick * direction;
 
-        // Calculate the charge change amount based on the duration (for smooth update)
-        // If duration is too short, we calculate a simple delta update
-        if (rotationDuration > 0.001f)
-        {
-            chargeChangePerFrame = totalChargeChange / (rotationDuration / Time.deltaTime);
-        }
-        else
-        {
-            chargeChangePerFrame = totalChargeChange; // Update all at once if duration is near zero
-        }
+        // --- Tracking the amount of charge applied during the loop ---
+        float appliedChange = 0f; // Initialize applied charge tracker
+
+        // Calculate the charge change per frame based on rotation duration
+        float changePerFrame;
+        // Use a small constant to prevent division by zero, or simply use Time.deltaTime in the loop.
+        // For accurate, frame-rate independent change, let's use the time-based loop:
 
         // --- Interpolation Loop ---
         while (timeElapsed < rotationDuration)
         {
             float t = timeElapsed / rotationDuration;
 
+            // Calculate change for this specific frame based on the duration ratio
+            float deltaChangeThisFrame = (Time.deltaTime / rotationDuration) * totalChange;
+
+
             // 1. Rotate the VALVE
             transform.localRotation = Quaternion.Slerp(startRotation, targetRotation, t);
 
-            // 2. ⭐ NEW: Adjust the Refrigerant Charge on the Manager
-            // We use a small, frequent update during the rotation duration.
-            manager.AdjustCharge(chargeChangePerFrame);
+            // 2. Adjust the correct property on the Manager
+            if (controlType == ControlType.RefrigerantCharge)
+            {
+                manager.AdjustCharge(deltaChangeThisFrame);
+            }
+            else
+            {
+                manager.AdjustFanSpeed(deltaChangeThisFrame);
+            }
+
+            appliedChange += deltaChangeThisFrame; // Track the applied change
 
             timeElapsed += Time.deltaTime;
             yield return null;
@@ -91,15 +105,19 @@ public class ValveController : MonoBehaviour
         transform.localRotation = targetRotation;
         TotalRotationAngle = newTotalRotation;
 
-        // ⭐ NEW: Ensure any remaining fractional change is applied
-        // This is important to ensure the total charge added/removed is exactly `totalChargeChange`.
-        float actualChargeAdded = (TotalRotationAngle - (newTotalRotation - rotationAngle)) * (chargeAdjustmentPerClick / rotationAngle) * chargeDirection;
-        float difference = totalChargeChange - actualChargeAdded;
+        // ⭐ FIX: Apply any remaining change due to floating point inaccuracies/frame rounding
+        float remainingChange = totalChange - appliedChange;
 
-        // Only adjust if the difference is significant
-        if (Mathf.Abs(difference) > 0.0001f)
+        if (Mathf.Abs(remainingChange) > 0.0001f)
         {
-            manager.AdjustCharge(difference);
+            if (controlType == ControlType.RefrigerantCharge)
+            {
+                manager.AdjustCharge(remainingChange);
+            }
+            else
+            {
+                manager.AdjustFanSpeed(remainingChange);
+            }
         }
 
         isRotating = false;

@@ -1,3 +1,4 @@
+// cameraRotator.cs (REVISED)
 using UnityEngine;
 
 /// <summary>
@@ -25,14 +26,38 @@ public class cameraRotator : MonoBehaviour
 
     void Start()
     {
-        // Initialize the stored rotation to the object's current rotation.
-        _currentEulerAngles = transform.localEulerAngles;
-
-        // Ensure the rotation is normalized (to handle cases where X > 180 degrees)
-        if (_currentEulerAngles.x > 180)
+        // =========================================================================
+        // NEW CODE: Check for and apply transferred rotation from a previous scene.
+        // =========================================================================
+        if (GlobalCameraData.applyRotation)
         {
-            _currentEulerAngles.x -= 360;
+            // 1. Convert the transferred Quaternion rotation into Euler angles.
+            _currentEulerAngles = GlobalCameraData.cameraRotation.eulerAngles;
+
+            // 2. Set the transform immediately.
+            transform.localRotation = GlobalCameraData.cameraRotation;
+
+            // 3. Reset the flag so that subsequent loads (e.g., re-loading the scene normally) 
+            //    don't apply the old rotation.
+            GlobalCameraData.applyRotation = false;
+
+            Debug.Log("Applied transferred camera rotation: " + _currentEulerAngles);
         }
+        else
+        {
+            // ORIGINAL CODE: Initialize the stored rotation to the object's current rotation 
+            //                if no rotation was transferred.
+            _currentEulerAngles = transform.localEulerAngles;
+
+            // Ensure the rotation is normalized (to handle cases where X > 180 degrees)
+            if (_currentEulerAngles.x > 180)
+            {
+                _currentEulerAngles.x -= 360;
+            }
+
+            Debug.Log("Initialized camera rotation to scene default: " + _currentEulerAngles);
+        }
+        // =========================================================================
 
         // Optional: Lock the cursor in the center of the screen during gameplay
         // Cursor.lockState = CursorLockMode.Locked; 
@@ -40,6 +65,16 @@ public class cameraRotator : MonoBehaviour
 
     void Update()
     {
+        // =========================================================================
+        // FIX: Halt all rotation if the game is paused.
+        // NOTE: The 'pauseMenu' class must exist for this line to compile.
+        // =========================================================================
+        if (pauseMenu.gameIsPaused)
+        {
+            return;
+        }
+        // =========================================================================
+
         // 1. Handle Keyboard Input (Arrow Keys)
         HandleKeyboardInput();
 
