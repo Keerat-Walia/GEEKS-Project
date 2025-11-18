@@ -639,7 +639,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 440, y: 162}
+  m_AnchoredPosition: {x: 776, y: 346}
   m_SizeDelta: {x: 120, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &989246404
@@ -1201,7 +1201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b7f1f845da55041b7439b0144b8149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::loadNextScene
-  targetSceneName: Refrigeration
+  targetSceneName: entrance
 --- !u!1001 &1254168134427559268
 PrefabInstance:
   m_ObjectHideFlags: 0
