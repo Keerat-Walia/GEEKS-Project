@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using TMPro;
+using TMPro; // Still needed if you use TMPro for other UI elements (like current values or labels)
 
 public class RefrigerationCycleManager : MonoBehaviour
 {
@@ -13,14 +13,18 @@ public class RefrigerationCycleManager : MonoBehaviour
     [Range(0f, 1f)]
     public float fanSpeed = 0.5f;
 
-    // --- Gauge UI References ---
+    // --- Gauge UI References (3D Transforms for Needles) ---
     [Header("Gauge UI References (Heat Exchanger 1 - Condenser)")]
-    public TextMeshProUGUI he1PressureText;
-    public TextMeshProUGUI he1TemperatureText;
+    [Tooltip("The Transform of the Condenser Pressure gauge needle.")]
+    public Transform he1PressureNeedle;
+    [Tooltip("The Transform of the Condenser Temperature gauge needle.")]
+    public Transform he1TemperatureNeedle;
 
-    [Header("Gauge UI References (Heat Exchanger 2 - Evaporator)")] // ⭐ ADDED HE2 REFERENCES
-    public TextMeshProUGUI he2PressureText;
-    public TextMeshProUGUI he2TemperatureText;
+    [Header("Gauge UI References (Heat Exchanger 2 - Evaporator)")]
+    [Tooltip("The Transform of the Evaporator Pressure gauge needle.")]
+    public Transform he2PressureNeedle;
+    [Tooltip("The Transform of the Evaporator Temperature gauge needle.")]
+    public Transform he2TemperatureNeedle;
 
     // --- System Constants (Simplified Model) ---
     [Header("System Constants")]
@@ -34,18 +38,41 @@ public class RefrigerationCycleManager : MonoBehaviour
     [Tooltip("How much the fan speed affects the cooling/pressure drop (e.g., 20)")]
     public float fanCoolingInfluence = 20.0f;
 
+    [Header("Gauge Rotation Mapping")]
+    [Tooltip("The minimum (start) angle for the gauge needle rotation (e.g., -135)")]
+    public float minGaugeAngle = -135f;
+    [Tooltip("The maximum (end) angle for the gauge needle rotation (e.g., 135)")]
+    public float maxGaugeAngle = 135f;
+    [Tooltip("The maximum expected value for the highest pressure gauge (e.g., 150 kPa)")]
+    public float maxCondenserPressure = 150.0f;
+    [Tooltip("The maximum expected value for the highest temperature gauge (e.g., 60 °C)")]
+    public float maxCondenserTemperature = 60.0f;
+
+    // --- Game Management ---
+    [Header("Game Management")]
+    [Tooltip("Reference to the UIManager script for game progression.")]
+    public RefrigerationUIManager uiManager;
+
+    // Target values for game completion checks
+    private const float TARGET_PRESSURE_MAX = 150.0f; // Goal for Charge Level
+    private const float TARGET_PRESSURE_MIN = 60.0f;  // Goal for Fan Speed Level
+
+    // --- Private Calculated State ---
     private float currentPressure;
     private float currentTemperature;
 
     private void Start()
     {
+        // Clamp initial values
         refrigerantCharge = Mathf.Clamp(refrigerantCharge, minCharge, 1.0f);
         fanSpeed = Mathf.Clamp(fanSpeed, 0.0f, 1.0f);
+
+        // Initial UI update
         UpdateGauges();
     }
 
     /// <summary>
-    /// Called by the ValveController to change the refrigerant charge.
+    /// Called by a ValveController to change the refrigerant charge.
     /// </summary>
     public void AdjustCharge(float delta)
     {
@@ -55,7 +82,7 @@ public class RefrigerationCycleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Called by the ValveController to change the fan speed.
+    /// Called by a ValveController to change the fan speed.
     /// </summary>
     public void AdjustFanSpeed(float delta)
     {
@@ -76,15 +103,59 @@ public class RefrigerationCycleManager : MonoBehaviour
         currentPressure = basePressure + (chargeDelta * pressureSensitivity) - fanEffect;
         currentTemperature = baseTemperature + (chargeDelta * temperatureSensitivity) - fanEffect;
 
-        // 3. Update the UI Text Gauges.
+        // 3. Calculate separate P/T values for high (HE1) and low (HE2) sides.
+        float he1P = currentPressure * 1.5f;
+        float he1T = currentTemperature * 1.5f;
+        float he2P = currentPressure * 0.5f;
+        float he2T = currentTemperature * 0.5f;
 
-        // Heat Exchanger 1 (Condenser - generally higher P/T)
-        if (he1PressureText != null) he1PressureText.text = $"P: {currentPressure * 1.5f:F1} kPa";
-        if (he1TemperatureText != null) he1TemperatureText.text = $"T: {currentTemperature * 1.5f:F1} °C";
 
-        // Heat Exchanger 2 (Evaporator - generally lower P/T)
-        // ⭐ UPDATED LOGIC TO CHECK FOR NULLS AND USE HE2 REFERENCES
-        if (he2PressureText != null) he2PressureText.text = $"P: {currentPressure * 0.5f:F1} kPa";
-        if (he2TemperatureText != null) he2TemperatureText.text = $"T: {currentTemperature * 0.5f:F1} °C";
+        // 4. Apply rotations to the 3D gauge needles.
+
+        // Condenser Pressure (HE1)
+        RotateNeedle(he1PressureNeedle, he1P, maxCondenserPressure);
+        // Condenser Temperature (HE1)
+        RotateNeedle(he1TemperatureNeedle, he1T, maxCondenserTemperature);
+
+        // Evaporator Pressure (HE2)
+        RotateNeedle(he2PressureNeedle, he2P, maxCondenserPressure);
+        // Evaporator Temperature (HE2)
+        RotateNeedle(he2TemperatureNeedle, he2T, maxCondenserTemperature);
+
+        // 5. Game Progression Check (Uses Condenser Pressure for tracking)
+        if (uiManager != null)
+        {
+            // Check for Objective 1: Maximize P/T by charge manipulation
+            uiManager.CheckChargeObjective(he1P, TARGET_PRESSURE_MAX);
+
+            // Check for Objective 2: Minimize P/T by fan speed manipulation
+            uiManager.CheckFanObjective(he1P, TARGET_PRESSURE_MIN);
+        }
+    }
+
+    /// <summary>
+    /// Maps a sensor value to a rotation angle and applies it to the needle's Z-axis.
+    /// NOTE: Change the Quaternion.Euler axis (X, Y, or Z) to adjust rotation axis.
+    /// </summary>
+    /// <param name="needle">The Transform of the 3D gauge needle.</param>
+    /// <param name="value">The current pressure or temperature value.</param>
+    /// <param name="maxValue">The maximum value the gauge should display.</param>
+    private void RotateNeedle(Transform needle, float value, float maxValue)
+    {
+        if (needle == null) return;
+
+        // Clamp the value to the max to prevent spinning wildly
+        float clampedValue = Mathf.Clamp(value, 0f, maxValue);
+
+        // Calculate the normalized position (0.0 to 1.0)
+        float normalizedValue = clampedValue / maxValue;
+
+        // Map the normalized position to the angular range (minGaugeAngle to maxGaugeAngle)
+        float rotationAngleZ = Mathf.Lerp(minGaugeAngle, maxGaugeAngle, normalizedValue);
+
+        // Apply the rotation on the Z-axis (change to X or Y as needed for your 3D models)
+        // Example for Z-Axis: Quaternion.Euler(0f, 0f, rotationAngleZ)
+        // Example for X-Axis: Quaternion.Euler(rotationAngleZ, 0f, 0f)
+        needle.localRotation = Quaternion.Euler(0f, 0f, rotationAngleZ);
     }
 }
