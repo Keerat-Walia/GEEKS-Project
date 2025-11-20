@@ -156,6 +156,6 @@ public class RefrigerationCycleManager : MonoBehaviour
         // Apply the rotation on the Z-axis (change to X or Y as needed for your 3D models)
         // Example for Z-Axis: Quaternion.Euler(0f, 0f, rotationAngleZ)
         // Example for X-Axis: Quaternion.Euler(rotationAngleZ, 0f, 0f)
-        needle.localRotation = Quaternion.Euler(0f, 0f, rotationAngleZ);
+        needle.localRotation = Quaternion.Euler(rotationAngleZ, 0f, 0f);
     }
 }
