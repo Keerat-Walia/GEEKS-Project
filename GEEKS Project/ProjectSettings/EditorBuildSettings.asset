@@ -48,6 +48,9 @@ EditorBuildSettings:
     path: Assets/Scenes/navigationScenes/entranceleft.unity
     guid: 34c90a4c2d5216948a22d1d54b9c0c50
   - enabled: 1
+    path: Assets/Scenes/LabSafety.unity
+    guid: e3519e5345917bc48957c3cb66179c86
+  - enabled: 1
     path: Assets/Scenes/navigationScenes/entranceforward.unity
     guid: fe88b2d51fd2d4f47933236777606d6c
   - enabled: 1
