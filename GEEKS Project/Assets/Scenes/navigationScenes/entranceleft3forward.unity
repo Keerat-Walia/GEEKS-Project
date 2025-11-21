@@ -973,7 +973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b7f1f845da55041b7439b0144b8149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::loadNextScene
-  targetSceneName: entrance2forward
+  targetSceneName: clearing
 --- !u!1 &1931510794
 GameObject:
   m_ObjectHideFlags: 0
