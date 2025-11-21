@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 6f3235135bba02d4b89426705ffb600d, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -182,6 +182,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 612017898718777049, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b84866a5a62705c4fb6e73f5d8210a3b, type: 3}
     - target: {fileID: 1697228209532288408, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -222,6 +226,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Text
       objectReference: {fileID: 0}
+    - target: {fileID: 6356036009620622973, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6356036009620622973, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 72f9e67b7843e464faf13e3f2dc16fd3, type: 3}
     - target: {fileID: 8219568237273106804, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_Name
       value: PopUp1
@@ -275,7 +287,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 608206175365524043, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
@@ -856,7 +869,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 716407955}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1575954813}
+        m_TargetAssemblyTypeName: loadNextScene, Assembly-CSharp
+        m_MethodName: LoadTargetScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &716407955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -877,7 +902,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7632156641727129564, guid: c164cff5d531b924cab23980fd978595, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b84866a5a62705c4fb6e73f5d8210a3b, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -910,15 +935,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d3dd1c249598bca459f8c4abbcdbf71c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 500.0002
+      value: 500.00034
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3dd1c249598bca459f8c4abbcdbf71c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 500.00052
+      value: 500.0008
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3dd1c249598bca459f8c4abbcdbf71c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 500.0002
+      value: 500.00034
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3dd1c249598bca459f8c4abbcdbf71c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1019,6 +1044,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0023155806, y: 0.002587631, z: 0.0015563414}
   m_Center: {x: -0.00000025187586, y: -1.7462307e-10, z: 0.0007796172}
+--- !u!1 &1575954808 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 333116513561901754, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+  m_PrefabInstance: {fileID: 1897409508}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1575954813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575954808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08b7f1f845da55041b7439b0144b8149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::loadNextScene
+  targetSceneName: entrance
 --- !u!1 &1678999653 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8219568237273106804, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
@@ -1175,6 +1218,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Text
       objectReference: {fileID: 0}
+    - target: {fileID: 6356036009620622973, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6356036009620622973, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 72f9e67b7843e464faf13e3f2dc16fd3, type: 3}
     - target: {fileID: 8121895011324455742, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_text
       value: "Excellent work, Agent. Safety first \u2014 style second. You are now
@@ -1235,11 +1286,15 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5948729323491979794, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+    - {fileID: 608206175365524043, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8785134414486163973, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 716407953}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 333116513561901754, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1575954813}
   m_SourcePrefab: {fileID: 100100000, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
 --- !u!224 &1897409509 stripped
 RectTransform:
@@ -1397,6 +1452,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Text
       objectReference: {fileID: 0}
+    - target: {fileID: 6356036009620622973, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6356036009620622973, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 72f9e67b7843e464faf13e3f2dc16fd3, type: 3}
     - target: {fileID: 8121895011324455742, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_text
       value: 'Agent,
@@ -1460,6 +1523,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5948729323491979794, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+    - {fileID: 608206175365524043, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
