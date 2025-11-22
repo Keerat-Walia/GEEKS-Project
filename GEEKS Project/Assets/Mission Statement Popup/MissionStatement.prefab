@@ -305,7 +305,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Welcome, Agent. \n\nYou've been selected for Operation Cool Circuit -
     your first mission under the Chemical Engineering Division.\n\nClick the button
-    to Accept your mission."
+    to Accept your mission.\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

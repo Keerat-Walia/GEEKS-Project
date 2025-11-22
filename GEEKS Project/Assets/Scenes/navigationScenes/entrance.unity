@@ -1226,6 +1226,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -1.52
       objectReference: {fileID: 0}
+    - target: {fileID: 6356036009620622973, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6356036009620622973, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 72f9e67b7843e464faf13e3f2dc16fd3, type: 3}
     - target: {fileID: 6893781397151948835, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_text
       value: Continue
@@ -1234,8 +1242,7 @@ PrefabInstance:
       propertyPath: m_text
       value: "Agent, \n\nIntelligence confirms that critical data is locked inside
         the Refrigeration Bay. Your objective: collect performance data from the
-        cooling system\n\n(Hint: The Refrigeration Bay is in the far left corner
-        of the lab)"
+        cooling system\n\nFollow the green arrows to locate the Refrigeration Bay."
       objectReference: {fileID: 0}
     - target: {fileID: 8219568237273106804, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_Name

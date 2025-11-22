@@ -11,6 +11,10 @@ public class RefrigerationUIManager : MonoBehaviour
     public GameObject fanExplanationPanel;    // Used for Level 2 (Minimize P/T)
     public GameObject congratulationsPanel;
 
+    [Header("Audio")]
+    [Tooltip("The AudioSource component that will play the success sound.")]
+    public AudioSource successAudioSource; // ⭐ NEW VARIABLE
+
     private bool isChargeUpObjectiveComplete = false;
     private bool isChargeDownObjectiveComplete = false;
 
@@ -37,6 +41,7 @@ public class RefrigerationUIManager : MonoBehaviour
         HidePanel(chargeExplanationPanel);
         HidePanel(fanExplanationPanel);
         HidePanel(congratulationsPanel);
+            
 
         // Ensure the cycle manager starts at the nominal 0.5/0.5 state
         if (cycleManager != null)
@@ -87,6 +92,11 @@ public class RefrigerationUIManager : MonoBehaviour
             isChargeUpObjectiveComplete = true;
             Debug.Log("Level 1 Complete! Starting Minimize Task.");
 
+            if (successAudioSource != null)
+            {
+                successAudioSource.Play();
+            }
+
             HidePanel(chargeExplanationPanel);
 
             // ⭐ LEVEL 2 SETUP: Set system to MAX state (Charge=1.0, Fan=1.0)
@@ -111,8 +121,19 @@ public class RefrigerationUIManager : MonoBehaviour
             isChargeDownObjectiveComplete = true;
             Debug.Log("Level 2 Complete! Showing Congratulations.");
 
+            if (successAudioSource != null)
+            {
+                successAudioSource.Play();
+            }
+
             HidePanel(fanExplanationPanel);
             ShowPanel(congratulationsPanel);
+
+            // ⭐ NEW: Play the success audio!
+            if (successAudioSource != null)
+            {
+                successAudioSource.Play();
+            }
 
             // ⭐ Final Action: Set the Global Variable to TRUE
             refrigerationGameComplete = true;
