@@ -349,7 +349,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Accept
+  m_text: 'Continue
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1229,7 +1231,7 @@ PrefabInstance:
     - target: {fileID: 8121895011324455742, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_text
       value: "Excellent work, Agent. Safety first \u2014 style second. You are now
-        cleared for lab entry. Click on the door to begin your infiltration"
+        cleared for lab entry. Click continue to carry on with the mission."
       objectReference: {fileID: 0}
     - target: {fileID: 8219568237273106804, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_Name

@@ -262,17 +262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
---- !u!114 &262805657 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3314868995103354844, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
-  m_PrefabInstance: {fileID: 2146643766}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &368350303 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8671201424206229938, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
@@ -521,7 +510,7 @@ MonoBehaviour:
   Accept: {fileID: 171544459}
   Text: {fileID: 1434990723}
   Background: {fileID: 698483099}
-  Frame: {fileID: 262805657}
+  Frame: {fileID: 0}
   popupDelay: 1
   PPEPanel: {fileID: 0}
 --- !u!1 &951095874
@@ -731,7 +720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3556435, g: 0.8254717, b: 0.24530527, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1233,6 +1222,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Text
       objectReference: {fileID: 0}
+    - target: {fileID: 5042454330841891644, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1.52
+      objectReference: {fileID: 0}
     - target: {fileID: 6893781397151948835, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_text
       value: Continue
@@ -1241,7 +1234,8 @@ PrefabInstance:
       propertyPath: m_text
       value: "Agent, \n\nIntelligence confirms that critical data is locked inside
         the Refrigeration Bay. Your objective: collect performance data from the
-        cooling system"
+        cooling system\n\n(Hint: The Refrigeration Bay is in the far left corner
+        of the lab)"
       objectReference: {fileID: 0}
     - target: {fileID: 8219568237273106804, guid: ed2d9bb09fabf7c418ea1285908e99cb, type: 3}
       propertyPath: m_Name

@@ -2,32 +2,56 @@
 
 public class RefrigerationUIManager : MonoBehaviour
 {
-    // ⭐ NEW: Static Global Variable
-    // Any script can read this using: UIManager.refrigerationGameComplete
+    // ⭐ Global Flag: Read by other scripts to know when the game is over.
     public static bool refrigerationGameComplete = false;
 
     [Header("Pop-up UI Panels")]
     public GameObject introPanel;
-    public GameObject chargeExplanationPanel;
-    public GameObject fanExplanationPanel;
+    public GameObject chargeExplanationPanel; // Used for Level 1 (Maximize P/T)
+    public GameObject fanExplanationPanel;    // Used for Level 2 (Minimize P/T)
     public GameObject congratulationsPanel;
 
-    private bool isChargeObjectiveComplete = false;
-    private bool isFanObjectiveComplete = false;
+    private bool isChargeUpObjectiveComplete = false;
+    private bool isChargeDownObjectiveComplete = false;
+
+    // ⭐ FIX: Tracks if the introduction is dismissed and the game has started.
+    public bool isGameActive = false;
+
+    [Header("Manager Reference")]
+    public RefrigerationCycleManager cycleManager;
+
+    // Tolerance to hit the target pressure
+    private const float TARGET_TOLERANCE = 1.0f;
 
     // --- Initialization ---
     void Start()
     {
-        // Ensure the game state is false when the manager starts
+        // Reset the global state and local flags
         refrigerationGameComplete = false;
+        isGameActive = false;
+        isChargeUpObjectiveComplete = false;
+        isChargeDownObjectiveComplete = false;
 
-        // 1. Show only the Intro Panel on start.
+        // Ensure panels are correctly set on start
         ShowPanel(introPanel);
         HidePanel(chargeExplanationPanel);
         HidePanel(fanExplanationPanel);
         HidePanel(congratulationsPanel);
+
+        // Ensure the cycle manager starts at the nominal 0.5/0.5 state
+        if (cycleManager != null)
+        {
+            cycleManager.refrigerantCharge = 0.5f;
+            cycleManager.SetFanSpeed(0.5f);
+        }
+
+        if (cycleManager == null)
+        {
+            Debug.LogError("UIManager is missing reference to the RefrigerationCycleManager! Drag the manager into the Inspector.");
+        }
     }
 
+    // --- Helper Methods to Show/Hide Panels ---
     private void ShowPanel(GameObject panel)
     {
         if (panel != null) panel.SetActive(true);
@@ -41,45 +65,57 @@ public class RefrigerationUIManager : MonoBehaviour
     // --- Pop-up 1: Introduction (Disappears on Continue) ---
     public void OnIntroContinueClicked()
     {
-        // Hide Intro, show the first task explanation.
         HidePanel(introPanel);
-        ShowPanel(chargeExplanationPanel);
+
+        // ⭐ FIX: Activate the game state
+        isGameActive = true;
+
+        // LEVEL 1 SETUP: Start at Nominal 0.5/0.5 (Set in Start method)
+        // Player is instructed to increase both Charge and Fan Speed to 1.0.
+
+        ShowPanel(chargeExplanationPanel); // Start the Maximize P/T task
     }
 
-    // --- Pop-up 2: Charge Explanation (Disappears when P/T is Maximized) ---
-    public void CheckChargeObjective(float currentPressure, float targetPressure)
+    // --- Pop-up 2: Level 1 Check (Maximize P/T) ---
+    public void CheckLevelOneObjective(float currentPressure, float targetPressure)
     {
-        if (isChargeObjectiveComplete) return;
+        if (!isGameActive || isChargeUpObjectiveComplete) return;
 
-        // Use a small tolerance for floating point comparison
-        if (currentPressure >= targetPressure - 0.1f)
+        // Check if pressure is >= the target MAX pressure (135.0 kPa)
+        if (currentPressure >= targetPressure - TARGET_TOLERANCE)
         {
-            isChargeObjectiveComplete = true;
-            Debug.Log("Charge Objective Complete! Starting Fan Task.");
+            isChargeUpObjectiveComplete = true;
+            Debug.Log("Level 1 Complete! Starting Minimize Task.");
+
             HidePanel(chargeExplanationPanel);
-            ShowPanel(fanExplanationPanel); // Proceed to the next task explanation
+
+            // ⭐ LEVEL 2 SETUP: Set system to MAX state (Charge=1.0, Fan=1.0)
+            if (cycleManager != null)
+            {
+                cycleManager.SetFanSpeed(1.0f);
+                cycleManager.refrigerantCharge = 1.0f;
+            }
+
+            ShowPanel(fanExplanationPanel); // Start the Minimize P/T task
         }
     }
 
-    // --- Pop-up 3: Fan Explanation (Disappears when P/T is Minimised) ---
-    public void CheckFanObjective(float currentPressure, float targetPressure)
+    // --- Pop-up 3: Level 2 Check (Minimize P/T) ---
+    public void CheckLevelTwoObjective(float currentPressure, float targetPressure)
     {
-        if (!isChargeObjectiveComplete || isFanObjectiveComplete) return;
+        if (!isChargeUpObjectiveComplete || isChargeDownObjectiveComplete) return;
 
-        // Use a small tolerance for floating point comparison
-        if (currentPressure <= targetPressure + 0.1f)
+        // Check if pressure is <= the target MIN pressure (30.0 kPa)
+        if (currentPressure <= targetPressure + TARGET_TOLERANCE)
         {
-            isFanObjectiveComplete = true;
-            Debug.Log("Fan Objective Complete! Showing Congratulations.");
+            isChargeDownObjectiveComplete = true;
+            Debug.Log("Level 2 Complete! Showing Congratulations.");
 
-            // ⭐ ACTION: Show the final screen
             HidePanel(fanExplanationPanel);
             ShowPanel(congratulationsPanel);
 
-            // ⭐ ACTION: Set the Global Variable to TRUE
+            // ⭐ Final Action: Set the Global Variable to TRUE
             refrigerationGameComplete = true;
-            if (refrigerationGameComplete)  
-                Debug.Log("Refrigeration Game Completed. Trophy sequence started");
         }
     }
 }
