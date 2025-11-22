@@ -41,7 +41,7 @@ public class RefrigerationUIManager : MonoBehaviour
         HidePanel(chargeExplanationPanel);
         HidePanel(fanExplanationPanel);
         HidePanel(congratulationsPanel);
-            
+
 
         // Ensure the cycle manager starts at the nominal 0.5/0.5 state
         if (cycleManager != null)

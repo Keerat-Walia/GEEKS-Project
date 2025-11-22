@@ -105,6 +105,6 @@ public class trophyDisplay : MonoBehaviour
     private void HandleRotation()
     {
         // Spin the trophy around its local Y-axis at the specified rotationSpeed
-        trophyTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.Self);
+        trophyTransform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime, Space.Self);
     }
 }

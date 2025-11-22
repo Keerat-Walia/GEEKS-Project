@@ -134,6 +134,6 @@ public class RefrigerationCycleManager : MonoBehaviour
         float rotationAngleZ = Mathf.Lerp(minGaugeAngle, maxGaugeAngle, normalizedValue);
 
         // Apply the rotation on the Z-axis 
-        needle.localRotation = Quaternion.Euler(rotationAngleZ,0f, 0f);
+        needle.localRotation = Quaternion.Euler(rotationAngleZ, 0f, 0f);
     }
 }
