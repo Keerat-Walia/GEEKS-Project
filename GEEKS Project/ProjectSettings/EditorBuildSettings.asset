@@ -63,6 +63,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 2.unity
     guid: e436a1ed18581f04996f85f8b402ab90
   - enabled: 1
+    path: Assets/Scenes/Opening.unity
+    guid: b82859eec3eae4f4f9ccee83c11938d0
+  - enabled: 1
     path: Assets/Scenes/navigationScenes/entranceleft2forward.unity
     guid: 1b523a3a4c4388a4e937659d6032d463
   - enabled: 1

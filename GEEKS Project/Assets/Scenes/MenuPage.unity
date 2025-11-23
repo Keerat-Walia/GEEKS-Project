@@ -841,7 +841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b7f1f845da55041b7439b0144b8149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::loadNextScene
-  targetSceneName: entrance
+  targetSceneName: Opening
 --- !u!4 &372012411
 Transform:
   m_ObjectHideFlags: 0
