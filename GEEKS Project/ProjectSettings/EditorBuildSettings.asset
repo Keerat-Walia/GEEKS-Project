@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Scenes not in build/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
     path: Assets/Scenes/PanOfLab.unity
     guid: 3cbcbfedd12f66c4998d81727321132d
+  - enabled: 1
+    path: Assets/Scenes/Scenes not in build/SampleScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/Scenes not in build/OpeningScene_MissionStatement+LabSafety.unity
     guid: 64a6b2e338a672b43b0cc8a48a2150b6
