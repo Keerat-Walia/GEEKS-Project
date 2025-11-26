@@ -60,6 +60,7 @@ public class pauseMenu : MonoBehaviour
     public void loadMenu()
     {
         Time.timeScale = 1f; // Always ensure time scale is normal before loading a new scene
+        gameIsPaused = false;
         SceneManager.LoadScene("MenuPage");
     }
 
